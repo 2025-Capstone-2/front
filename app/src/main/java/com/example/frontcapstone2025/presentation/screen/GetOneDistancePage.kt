@@ -27,7 +27,6 @@ import com.example.frontcapstone2025.components.items.LoadingComponent
 import com.example.frontcapstone2025.components.layout.TopBarWithBack
 import com.example.frontcapstone2025.ui.theme.TextColorGray
 import com.example.frontcapstone2025.viemodel.MainViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
@@ -77,7 +76,7 @@ fun GetOneDistancePage(
                         .padding(8.dp)
                 )
                 Text(
-                    text = if (distance != -1.0) "거리 : $distance" else "거리 : ",
+                    text = if (distance != -1.0) "${id}번 위치 거리 : $distance" else "거리 : ",
                     color = TextColorGray,
                 )
                 CustomButton(

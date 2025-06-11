@@ -12,11 +12,12 @@ interface ApiService {
 
     @GET("/sambyeon/get_positiion")
     suspend fun getWifiPosition(
-        @Query("up_distance") upDistance: Double,
-        @Query("down_distance") downDistance: Double,
-        @Query("front_distance") frontDistance: Double,
-        @Query("left_distance") leftDistance: Double,
-        @Query("arm_length") armLength: Double,
+        @Query("origin") origin: Double,
+        @Query("origin_right") origin_right: Double,
+        @Query("origin_cross_one") origin_cross_one: Double,
+        @Query("origin_cross_two") origin_cross_two: Double,
+        @Query("one_side_length") one_side_length: Double,
+        @Query("knee_to_eyes") knee_to_eyes: Double,
     ): Response<WifiPosition>
 
     @Multipart

@@ -26,16 +26,18 @@ class MainViewModel : ViewModel() {
     private val _chosenWifi = MutableStateFlow("")
     val chosenWifi: StateFlow<String> = _chosenWifi.asStateFlow()
 
-    private val _upDistance = MutableStateFlow(-1.0)
-    val upDistance: StateFlow<Double> = _upDistance.asStateFlow()
-    private val _downDistance = MutableStateFlow(-1.0)
-    val downDistance: StateFlow<Double> = _downDistance.asStateFlow()
-    private val _frontDistance = MutableStateFlow(-1.0)
-    val frontDistance: StateFlow<Double> = _frontDistance.asStateFlow()
-    private val _leftDistance = MutableStateFlow(-1.0)
-    val leftDistance: StateFlow<Double> = _leftDistance.asStateFlow()
-    private val _armLength = MutableStateFlow(-1.0)
-    val armLength: StateFlow<Double> = _armLength.asStateFlow()
+    private val _originDistance = MutableStateFlow(-1.0)
+    val originDistance: StateFlow<Double> = _originDistance.asStateFlow()
+    private val _originRightDistance = MutableStateFlow(-1.0)
+    val originRightDistance: StateFlow<Double> = _originRightDistance.asStateFlow()
+    private val _originCrossOneDistance = MutableStateFlow(-1.0)
+    val originCrossOneDistance: StateFlow<Double> = _originCrossOneDistance.asStateFlow()
+    private val _originCrossTwoDistance = MutableStateFlow(-1.0)
+    val originCrossTwoDistance: StateFlow<Double> = _originCrossTwoDistance.asStateFlow()
+    private val _oneSideLength = MutableStateFlow(-1.0)
+    val oneSideLength: StateFlow<Double> = _oneSideLength.asStateFlow()
+    private val _kneeToEyesLength = MutableStateFlow(-1.0)
+    val kneeToEyesLength: StateFlow<Double> = _kneeToEyesLength.asStateFlow()
 
     private val _wifiPosition = MutableStateFlow(WifiPosition())
     val wifiPosition: StateFlow<WifiPosition> = _wifiPosition.asStateFlow()
@@ -61,14 +63,19 @@ class MainViewModel : ViewModel() {
 
     suspend fun getWifiPosition() {
         // log all distance.value
-        Log.d("distance", "upDistance: ${upDistance.value} \ndownDistance: ${downDistance.value} \nfrontDistance: ${frontDistance.value} \nleftDistance: ${leftDistance.value} \narmLength: ${armLength.value}")
+        Log.d(
+            "distance",
+            "originDistance: ${originDistance.value} \noriginRightDistance: ${originRightDistance.value} \noriginCrossOneDistance: ${originCrossOneDistance.value} \noriginCrossTwoDistance: ${originCrossTwoDistance.value} \noneSideLength: ${oneSideLength.value} \n" +
+                    "kneeToEyesLength: ${kneeToEyesLength.value}"
+        )
 
         RetrofitManager.instance.getWifiPosition(
-            upDistance = upDistance.value,
-            downDistance = downDistance.value,
-            frontDistance = frontDistance.value,
-            leftDistance = leftDistance.value,
-            armLength = armLength.value / 100,
+            origin = originDistance.value / 100,
+            origin_right = originRightDistance.value / 100,
+            origin_cross_one = originCrossOneDistance.value / 100,
+            origin_cross_two = originCrossTwoDistance.value / 100,
+            one_side_length = oneSideLength.value,
+            knee_to_eyes = kneeToEyesLength.value,
             onSuccess = { wifiPosition: WifiPosition ->
                 Log.d("wifiposition", wifiPosition.toString())
                 _wifiPosition.update { wifiPosition }
@@ -86,10 +93,10 @@ class MainViewModel : ViewModel() {
 
     fun getDistanceById(id: Int): StateFlow<Double> {
         return when (id) {
-            1 -> upDistance
-            2 -> downDistance
-            3 -> leftDistance
-            4 -> frontDistance
+            1 -> originDistance
+            2 -> originRightDistance
+            3 -> originCrossOneDistance
+            4 -> originCrossTwoDistance
             else -> MutableStateFlow(-1.0) // 혹은 throw IllegalArgumentException
         }
     }
@@ -98,8 +105,12 @@ class MainViewModel : ViewModel() {
         _wifiListReady.value = value
     }
 
-    fun setArmLength(value: Double) {
-        _armLength.value = value
+    fun setOneLength(value: Double) {
+        _oneSideLength.value = value
+    }
+
+    fun setKneeToEyesLength(value: Double) {
+        _kneeToEyesLength.value = value
     }
 
     fun setShowDialog(value: Boolean) {
@@ -112,10 +123,10 @@ class MainViewModel : ViewModel() {
 
     fun isMeterChanged(): Boolean {
         val values = listOf(
-            _upDistance.value,
-            _downDistance.value,
-            _frontDistance.value,
-            _leftDistance.value
+            originDistance.value,
+            originRightDistance.value,
+            originCrossOneDistance.value,
+            originCrossTwoDistance.value
         )
         val count = values.count { kotlin.math.abs(it) > 1.0 }
         return count >= 3
@@ -123,10 +134,10 @@ class MainViewModel : ViewModel() {
 
     fun setDistanceById(id: Int, value: Double) {
         when (id) {
-            1 -> _upDistance.value = value
-            2 -> _downDistance.value = value
-            3 -> _leftDistance.value = value
-            4 -> _frontDistance.value = value
+            1 -> _originDistance.value = value
+            2 -> _originRightDistance.value = value
+            3 -> _originCrossOneDistance.value = value
+            4 -> _originCrossTwoDistance.value = value
             else -> {
                 // 유효하지 않은 ID일 경우 로그 출력
                 Log.w("MainViewModel", "Invalid ID passed to setDistanceById: $id")

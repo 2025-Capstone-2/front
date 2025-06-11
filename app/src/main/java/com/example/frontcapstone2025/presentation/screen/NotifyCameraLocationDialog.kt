@@ -99,12 +99,12 @@ fun NotifyCameraLocationDialog(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     if (meterChanged) {
-                        Text(text = "측정자의 왼쪽 어깨 기준", color = TextColorGray)
+                        Text(text = "최초 측정 위치 기준", color = TextColorGray)
                         Text(text = "x : %.2f m".format(x), color = TextColorGray)
                         Text(text = "y : %.2f m".format(y), color = TextColorGray)
                         Text(text = "z : %.2f m".format(z), color = TextColorGray)
                     } else {
-                        Text(text = "측정자의 왼쪽 어깨 기준", color = TextColorGray)
+                        Text(text = "최초 측정 위치 기준", color = TextColorGray)
                         Text(text = "x : %.2f cm".format(x), color = TextColorGray)
                         Text(text = "y : %.2f cm".format(y), color = TextColorGray)
                         Text(text = "z : %.2f cm".format(z), color = TextColorGray)

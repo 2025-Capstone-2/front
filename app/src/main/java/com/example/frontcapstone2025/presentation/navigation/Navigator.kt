@@ -104,10 +104,10 @@ fun Navigator(
                 GetAllDistancePage(
                     navigationBack = navigationBack,
                     navToOneDistancePage = listOf(
-                        { navController.navigate("GetUpDistancePage") },
-                        { navController.navigate("GetDownDistancePage") },
-                        { navController.navigate("GetLeftDistancePage") },
-                        { navController.navigate("GetFrontDistancePage") },
+                        { navController.navigate("GetOriginDistancePage") },
+                        { navController.navigate("GetOriginRightDistancePage") },
+                        { navController.navigate("GetOriginCrossOneDistancePage") },
+                        { navController.navigate("GetOriginCrossTwoDistancePage") },
                     ),
                     navToHelpPage = { navController.navigate("HelpPage") },
                     mainViewModel = mainViewModel,
@@ -122,7 +122,7 @@ fun Navigator(
             }
 
 
-            composable(route = "GetUpDistancePage") {
+            composable(route = "GetOriginDistancePage") {
                 GetOneDistancePage(
                     id = 1,
                     navigationBack = { navController.navigateUp() },
@@ -132,7 +132,7 @@ fun Navigator(
 
                 )
             }
-            composable(route = "GetDownDistancePage") {
+            composable(route = "GetOriginRightDistancePage") {
                 GetOneDistancePage(
                     id = 2,
                     navigationBack = { navController.navigateUp() },
@@ -142,7 +142,7 @@ fun Navigator(
 
                 )
             }
-            composable(route = "GetLeftDistancePage") {
+            composable(route = "GetOriginCrossOneDistancePage") {
                 GetOneDistancePage(
                     id = 3,
                     navigationBack = { navController.navigateUp() },
@@ -151,7 +151,7 @@ fun Navigator(
                     mainViewModel = mainViewModel
                 )
             }
-            composable(route = "GetFrontDistancePage") {
+            composable(route = "GetOriginCrossTwoDistancePage") {
                 GetOneDistancePage(
                     id = 4,
                     navigationBack = { navController.navigateUp() },

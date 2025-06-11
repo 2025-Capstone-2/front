@@ -46,11 +46,13 @@ fun GetAllDistancePage(
     navToHome: () -> Unit
 ) {
     val chosenWifi by mainViewModel.chosenWifi.collectAsState()
-    val upDistance by mainViewModel.upDistance.collectAsState()
-    val downDistance by mainViewModel.downDistance.collectAsState()
-    val leftDistance by mainViewModel.leftDistance.collectAsState()
-    val frontDistance by mainViewModel.frontDistance.collectAsState()
-    val armLength by mainViewModel.armLength.collectAsState()
+    val originDistance by mainViewModel.originDistance.collectAsState()
+    val originRightDistance by mainViewModel.originRightDistance.collectAsState()
+    val originCrossOneDistance by mainViewModel.originCrossOneDistance.collectAsState()
+    val originCrossTwoDistance by mainViewModel.originCrossTwoDistance.collectAsState()
+    val oneSideLength by mainViewModel.oneSideLength.collectAsState()
+    val kneeToEyesLength by mainViewModel.kneeToEyesLength.collectAsState()
+
 
     val upImage = painterResource(R.drawable.up)
     val downImage = painterResource(R.drawable.down)
@@ -94,24 +96,16 @@ fun GetAllDistancePage(
 
                     Text(
                         text = buildAnnotatedString {
-                            append("1. ")
+                            append("1. 최초 측정지는")
                             withStyle(
                                 style = SpanStyle(
                                     color = Color.Red,
                                     fontWeight = FontWeight.Bold
                                 )
                             ) {
-                                append("왼팔이 자유롭게")
+                                append("오른쪽과 오른쪽 앞 공간이 충분한 지점")
                             }
-                            append(" 움직일 수 있는 위치로 이동 후, 결과를 얻을 때까지 ")
-                            withStyle(
-                                style = SpanStyle(
-                                    color = Color.Red,
-                                    fontWeight = FontWeight.Bold
-                                )
-                            ) {
-                                append("움직이지 마세요.")
-                            }
+                            append("에서 시작하세요.")
                         },
                         fontSize = 16.sp,
                         lineHeight = 20.sp,
@@ -122,16 +116,25 @@ fun GetAllDistancePage(
 
                     Text(
                         text = buildAnnotatedString {
-                            append("2. ")
+                            append("2. 핸드폰으로 측정할 때,")
                             withStyle(
                                 style = SpanStyle(
                                     color = Color.Red,
                                     fontWeight = FontWeight.Bold
                                 )
                             ) {
-                                append("핸드폰을 왼손")
+                                append("1번과 4번 지점에서는 눈높이")
                             }
-                            append("에 쥐고, 사진의 동작을 따라해주세요.")
+                            append("에서 측정하고, ")
+                            withStyle(
+                                style = SpanStyle(
+                                    color = Color.Red,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            ) {
+                                append("나머지(2,3) 지점에서는 무릎 높이")
+                            }
+                            append("에 핸드폰을 두고 측정하세요.")
                         },
                         fontSize = 16.sp,
                         lineHeight = 20.sp,
@@ -159,7 +162,7 @@ fun GetAllDistancePage(
                             .clickable { navToOneDistancePage[0]() }
                     )
                     Text(
-                        text = if (upDistance != -1.0) "측정: %.4f m".format(upDistance) else "측정: X",
+                        text = if (originDistance != -1.0) "1번 위치 측정: %.4f m".format(originDistance) else "1번 위치 측정: X",
                         modifier = Modifier,
                         color = TextColorGray
                     )
@@ -176,7 +179,9 @@ fun GetAllDistancePage(
                             .clickable { navToOneDistancePage[1]() }
                     )
                     Text(
-                        text = if (downDistance != -1.0) "측정: %.4f m".format(downDistance) else "측정: X",
+                        text = if (originRightDistance != -1.0) "2번 위치 측정: %.4f m".format(
+                            originRightDistance
+                        ) else "2번 위치 측정: X",
                         modifier = Modifier,
                         color = TextColorGray
 
@@ -202,7 +207,9 @@ fun GetAllDistancePage(
                             .clickable { navToOneDistancePage[2]() }
                     )
                     Text(
-                        text = if (leftDistance != -1.0) "측정: %.4f m".format(leftDistance) else "측정: X",
+                        text = if (originCrossOneDistance != -1.0) "3번 위치 측정: %.4f m".format(
+                            originCrossOneDistance
+                        ) else "3번 위치 측정: X",
                         modifier = Modifier,
                         color = TextColorGray
                     )
@@ -219,7 +226,9 @@ fun GetAllDistancePage(
                             .clickable { navToOneDistancePage[3]() }
                     )
                     Text(
-                        text = if (frontDistance != -1.0) "측정: %.4f m".format(frontDistance) else "측정: X",
+                        text = if (originCrossTwoDistance != -1.0) "4번 위치 측정: %.4f m".format(
+                            originCrossTwoDistance
+                        ) else "4번 위치 측정: X",
                         modifier = Modifier,
                         color = TextColorGray
 
@@ -237,11 +246,12 @@ fun GetAllDistancePage(
                     }
                 },
                 enabled = (
-                        upDistance != -1.0 &&
-                                downDistance != -1.0 &&
-                                leftDistance != -1.0 &&
-                                frontDistance != -1.0 &&
-                                armLength != -1.0
+                        originDistance != -1.0 &&
+                                originRightDistance != -1.0 &&
+                                originCrossOneDistance != -1.0 &&
+                                originCrossTwoDistance != -1.0 &&
+                                oneSideLength != -1.0 &&
+                                kneeToEyesLength != -1.0
                         ),
             )
         }
