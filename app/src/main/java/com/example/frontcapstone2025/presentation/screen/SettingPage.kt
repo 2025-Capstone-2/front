@@ -46,6 +46,7 @@ import com.example.frontcapstone2025.ui.theme.BottomBarBackground
 import com.example.frontcapstone2025.ui.theme.DivideLineColor
 import com.example.frontcapstone2025.ui.theme.TextColorGray
 import com.example.frontcapstone2025.utility.rememberWifiDistances
+import com.example.frontcapstone2025.utility.rssiToDistance
 import com.example.frontcapstone2025.utility.zeroPhaseUkf
 import com.example.frontcapstone2025.viemodel.MainViewModel
 
@@ -146,7 +147,27 @@ fun SettingPage(
                     }
 
                     WifiGraph(rawPoints = rawPoints, filteredPoints = filteredPoints)
+
                     Spacer(modifier = Modifier.height(8.dp))
+
+                    val lastRawRssi = rawPoints.lastOrNull()?.rssi
+                    val lastFilteredRssi = filteredPoints.lastOrNull()?.rssi
+                    val lastDistance = lastFilteredRssi?.let { rssiToDistance(it) }
+                    Text(
+                        text = if (lastRawRssi != null) "Raw RSSI: %.2f dBm".format(lastRawRssi) else "Raw RSSI: -",
+                        color = TextColorGray
+                    )
+                    Text(
+                        text = if (lastFilteredRssi != null) "Filtered RSSI: %.2f dBm".format(lastFilteredRssi) else "Filtered RSSI: -",
+                        color = TextColorGray
+                    )
+                    Text(
+                        text = if (lastDistance != null) "Distance: %.2f m".format(lastDistance) else "Distance: -",
+                        color = TextColorGray
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
                     CustomButton(text = "리셋", onClicked = {
                         rawPoints.clear()
                         filteredPoints.clear()
