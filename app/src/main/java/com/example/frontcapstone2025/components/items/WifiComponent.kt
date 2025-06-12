@@ -81,28 +81,26 @@ fun WifiComponent(
                 fontSize = 24.sp,
                 color = TextColorGray
             )
-            Text(
-                text = bssid,
-                fontSize = 12.sp,
-                color = TextColorGray
-            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = bssid,
+                    fontSize = 12.sp,
+                    color = TextColorGray
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = String.format("$distance/%.2f", rssi),
+                    fontSize = 12.sp,
+                    color = TextColorGray,
+                    modifier = Modifier.padding(end = 8.dp)
+                )
+            }
         }
 
-        Spacer(modifier = Modifier.width(8.dp))
-
-        // 거리 텍스트만 하단 정렬
-        Box(
-            modifier = Modifier
-                .height(64.dp),
-            contentAlignment = Alignment.BottomEnd,
-        ) {
-            Text(
-                text = String.format("$distance/%.2f", rssi),
-                fontSize = 16.sp,
-                color = TextColorGray,
-                modifier = Modifier.padding(end = 8.dp, bottom = 10.dp)
-            )
-        }
+        Spacer(modifier = Modifier.width(2.dp))
 
         // '찾기' 버튼
         Button(
