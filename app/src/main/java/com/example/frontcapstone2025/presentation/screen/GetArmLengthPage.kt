@@ -116,7 +116,7 @@ fun GetArmLengthPage(
 
             // 무릎부터 눈까지 길이
             Text(
-                text = "무릎부터 눈 까지의 길이를 측정하여 cm로 입력하세요.\n",
+                text = "배꼽부터 머리 위로 들은 손까지의 길이를 측정하여 cm로 입력하세요.\n",
                 modifier = Modifier.padding(bottom = 8.dp),
                 color = TextColorGray
             )
@@ -164,6 +164,8 @@ fun GetArmLengthPage(
                     color = TextColorGray
                 )
             }
+
+            Spacer(modifier = Modifier.padding(vertical = 16.dp))
 
             // 측정 시간
             Text(
@@ -219,7 +221,7 @@ fun GetArmLengthPage(
             CustomButton(
                 onClicked = moveToGetAllDistancePage,
                 text = "거리 측정 시작",
-                enabled = (oneSideLength != -1.0 && kneeToEyesLength != -1.0 && scanTime >= 30),
+                enabled = (oneSideLength != -1.0 && kneeToEyesLength != -1.0 && scanTime > 0),
             )
 
         }

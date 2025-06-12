@@ -132,7 +132,7 @@ fun GetOneDistancePage(
                                         fontWeight = FontWeight.Bold
                                     )
                                 ) {
-                                    append(if (id == 1 || id == 4) "눈높이" else "무릎 높이")
+                                    append(if (id == 1 || id == 4) "머리 위" else "배꼽 높이")
                                 }
                                 append("로 들고, 측정 시작 버튼을 눌러주세요.")
                             },
