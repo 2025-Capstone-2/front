@@ -235,7 +235,10 @@ class MainViewModel : ViewModel() {
             RetrofitManager.instance.analyzePcap(
                 context = context,
                 uri = uri,
-                onSuccess = { list -> _suspiciousWifi.value = list },
+                onSuccess = { list ->
+                    _suspiciousWifi.value = list
+                    _showLoading.value = false
+                },
                 onFailure = {}
             )
         }

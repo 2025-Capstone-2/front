@@ -72,6 +72,7 @@ fun WifiListPage(
                 )
             } catch (_: SecurityException) {
             }
+            mainViewModel.setShowLoading(true)
             mainViewModel.analyzePcap(context, it)
         }
     }
