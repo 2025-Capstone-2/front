@@ -156,7 +156,7 @@ fun GetAllDistancePage(
                 Button(
                     onClick = { navToOneDistancePage[0]() },
                     modifier = Modifier
-                        .offset(x = 150.dp, y = 313.dp)
+                        .offset(x = 137.dp, y = 290.dp)
                         .size(42.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.Transparent,
@@ -169,7 +169,7 @@ fun GetAllDistancePage(
                 Button(
                     onClick = { navToOneDistancePage[1]() },
                     modifier = Modifier
-                        .offset(x = 223.dp, y = 313.dp)
+                        .offset(x = 205.dp, y = 290.dp)
                         .size(42.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.Transparent,
@@ -182,7 +182,7 @@ fun GetAllDistancePage(
                 Button(
                     onClick = { navToOneDistancePage[2]() },
                     modifier = Modifier
-                        .offset(x = 223.dp, y = 242.dp)
+                        .offset(x = 205.dp, y = 222.dp)
                         .size(42.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.Transparent,
@@ -195,7 +195,7 @@ fun GetAllDistancePage(
                 Button(
                     onClick = { navToOneDistancePage[3]() },
                     modifier = Modifier
-                        .offset(x = 223.dp, y = 163.dp)
+                        .offset(x = 205.dp, y = 153.dp)
                         .size(42.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.Transparent,
