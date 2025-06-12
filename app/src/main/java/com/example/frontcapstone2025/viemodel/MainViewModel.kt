@@ -121,17 +121,6 @@ class MainViewModel : ViewModel() {
         _showLoading.value = value
     }
 
-    fun isMeterChanged(): Boolean {
-        val values = listOf(
-            originDistance.value,
-            originRightDistance.value,
-            originCrossOneDistance.value,
-            originCrossTwoDistance.value
-        )
-        val count = values.count { kotlin.math.abs(it) > 1.0 }
-        return count >= 3
-    }
-
     fun setDistanceById(id: Int, value: Double) {
         when (id) {
             1 -> _originDistance.value = value
