@@ -49,7 +49,7 @@ fun Navigator(
     Scaffold { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = "MainPage",
+            startDestination = "GetAllDistancePage",
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(route = "MainPage") {
@@ -126,7 +126,7 @@ fun Navigator(
                 GetOneDistancePage(
                     id = 1,
                     navigationBack = { navController.navigateUp() },
-                    imageResId = R.drawable.up,
+                    imageResId = R.drawable.eye,
                     navToHelpPage = { navController.navigate("HelpPage") },
                     mainViewModel = mainViewModel
 
@@ -136,7 +136,7 @@ fun Navigator(
                 GetOneDistancePage(
                     id = 2,
                     navigationBack = { navController.navigateUp() },
-                    imageResId = R.drawable.down,
+                    imageResId = R.drawable.knee,
                     navToHelpPage = { navController.navigate("HelpPage") },
                     mainViewModel = mainViewModel
 
@@ -146,7 +146,7 @@ fun Navigator(
                 GetOneDistancePage(
                     id = 3,
                     navigationBack = { navController.navigateUp() },
-                    imageResId = R.drawable.left,
+                    imageResId = R.drawable.knee,
                     navToHelpPage = { navController.navigate("HelpPage") },
                     mainViewModel = mainViewModel
                 )
@@ -155,7 +155,7 @@ fun Navigator(
                 GetOneDistancePage(
                     id = 4,
                     navigationBack = { navController.navigateUp() },
-                    imageResId = R.drawable.front,
+                    imageResId = R.drawable.eye,
                     navToHelpPage = { navController.navigate("HelpPage") },
                     mainViewModel = mainViewModel
                 )
