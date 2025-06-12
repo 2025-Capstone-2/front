@@ -21,7 +21,7 @@ interface ApiService {
     ): Response<WifiPosition>
 
     @Multipart
-    @POST("/pcap/analyze")
+    @POST("/pcap/suspicious")
     suspend fun analyzePcap(
         @Part file: MultipartBody.Part,
     ): Response<StreamResponse>

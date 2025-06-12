@@ -72,10 +72,10 @@ class MainViewModel : ViewModel() {
         )
 
         RetrofitManager.instance.getWifiPosition(
-            origin = originDistance.value / 100,
-            origin_right = originRightDistance.value / 100,
-            origin_cross_one = originCrossOneDistance.value / 100,
-            origin_cross_two = originCrossTwoDistance.value / 100,
+            origin = originDistance.value * 100,
+            origin_right = originRightDistance.value * 100,
+            origin_cross_one = originCrossOneDistance.value * 100,
+            origin_cross_two = originCrossTwoDistance.value * 100,
             one_side_length = oneSideLength.value,
             knee_to_eyes = kneeToEyesLength.value,
             onSuccess = { wifiPosition: WifiPosition ->

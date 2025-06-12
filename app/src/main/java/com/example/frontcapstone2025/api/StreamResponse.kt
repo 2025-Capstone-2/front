@@ -7,7 +7,7 @@ data class StreamResponse(
         return targets.mapNotNull { it.getOrNull(0) }
     }
 
-    fun getAllBssids(): List<String> {
+    fun getAllSsids(): List<String> {
         return targets.flatten().distinct()
     }
 }

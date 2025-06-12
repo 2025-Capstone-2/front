@@ -115,7 +115,7 @@ class RetrofitManager {
             if (response.isSuccessful) {
                 val result = response.body()
                 Log.d("analyzePcap", "Success: ${gson.toJson(result)}")
-                val list = result?.getAllBssids() ?: emptyList()
+                val list = result?.getAllSsids() ?: emptyList()
                 onSuccess(list)
             } else {
                 Log.e("analyzePcap", "Error: ${response.errorBody()}")
