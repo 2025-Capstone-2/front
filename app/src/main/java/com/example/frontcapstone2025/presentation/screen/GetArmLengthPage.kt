@@ -39,6 +39,7 @@ fun GetArmLengthPage(
     val oneSideLength by mainViewModel.oneSideLength.collectAsState()
     val kneeToEyesLength by mainViewModel.kneeToEyesLength.collectAsState()
     val chosenWifi by mainViewModel.chosenWifi.collectAsState()
+    val scanTime by mainViewModel.scanTime.collectAsState()
 
     Scaffold(
         modifier = Modifier
@@ -164,10 +165,61 @@ fun GetArmLengthPage(
                 )
             }
 
+            // 측정 시간
+            Text(
+                text = "측정할 시간을 입력하세요. 30초~180초를 추천하며 길 수록 정확도가 올라갑니다.\n",
+                modifier = Modifier.padding(bottom = 8.dp),
+                color = TextColorGray
+            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                TextField(
+                    value = if (scanTime == -1) "" else scanTime.toString(),
+                    onValueChange = { ar ->
+                        if (ar.matches(Regex("^\\d{0,3}$"))) {
+                            ar.toIntOrNull()?.let {
+                                mainViewModel.setScanTime(it)
+                            }
+                        }
+                    },
+                    placeholder = { Text("초 단위로 입력 -> ex) 30") },
+                    singleLine = true,
+                    textStyle = TextStyle(textAlign = TextAlign.Center),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    keyboardActions = KeyboardActions(
+                        onDone = {
+//                            moveToGetAllDistancePage()
+                        }
+                    ),
+                    colors = TextFieldDefaults.colors(
+                        focusedTextColor = TextColorGray,
+                        unfocusedTextColor = TextColorGray,
+                        focusedContainerColor = Color.Transparent,
+                        unfocusedContainerColor = Color.Transparent,
+                        focusedIndicatorColor = DivideLineColor,
+                        disabledPlaceholderColor = TextColorGray,
+                        focusedPlaceholderColor = TextColorGray,
+                        unfocusedPlaceholderColor = TextColorGray,
+                        disabledIndicatorColor = DivideLineColor,
+                        unfocusedIndicatorColor = DivideLineColor,
+                        cursorColor = DivideLineColor
+                    )
+
+                )
+                Text(
+                    text = "초",
+                    modifier = Modifier.padding(start = 8.dp),
+                    color = TextColorGray
+                )
+            }
+
             CustomButton(
                 onClicked = moveToGetAllDistancePage,
                 text = "거리 측정 시작",
-                enabled = (oneSideLength != -1.0 && kneeToEyesLength != -1.0),
+                enabled = (oneSideLength != -1.0 && kneeToEyesLength != -1.0 && scanTime >= 30),
             )
 
         }

@@ -38,6 +38,8 @@ class MainViewModel : ViewModel() {
     val oneSideLength: StateFlow<Double> = _oneSideLength.asStateFlow()
     private val _kneeToEyesLength = MutableStateFlow(-1.0)
     val kneeToEyesLength: StateFlow<Double> = _kneeToEyesLength.asStateFlow()
+    private val _scanTime = MutableStateFlow(-1)
+    val scanTime: StateFlow<Int> = _scanTime.asStateFlow()
 
     private val _wifiPosition = MutableStateFlow(WifiPosition())
     val wifiPosition: StateFlow<WifiPosition> = _wifiPosition.asStateFlow()
@@ -111,6 +113,10 @@ class MainViewModel : ViewModel() {
 
     fun setKneeToEyesLength(value: Double) {
         _kneeToEyesLength.value = value
+    }
+
+    fun setScanTime(value: Int) {
+        _scanTime.value = value
     }
 
     fun setShowDialog(value: Boolean) {

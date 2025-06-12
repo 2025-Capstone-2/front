@@ -1,5 +1,6 @@
 package com.example.frontcapstone2025.presentation.screen
 
+import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -54,6 +55,9 @@ fun GetOneDistancePage(
 
     val wifiScanDelay by mainViewModel.wifiScanDelay.collectAsState()
 
+    val scanTime by mainViewModel.scanTime.collectAsState()
+    Log.d("measuring outside", "$scanTime, ${scanTime.toLong()}")
+
     var isLoading by rememberSaveable { mutableStateOf(false) }
     var measuring by remember { mutableStateOf(false) }
     var measureKey by remember { mutableStateOf(0) }
@@ -70,7 +74,8 @@ fun GetOneDistancePage(
 
     LaunchedEffect(measureKey) {
         if (measuring) {
-            delay(30_000L)
+            Log.d("measuring", "$scanTime, ${scanTime.toLong()}")
+            delay(scanTime.toLong() * 1_000L)
             val avg = if (collectedDistances.isNotEmpty()) collectedDistances.average() else -1.0
             mainViewModel.setDistanceById(id, avg)
             collectedDistances.clear()
