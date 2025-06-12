@@ -97,7 +97,7 @@ fun NotifyCameraLocationDialog(
                     horizontalAlignment = Alignment.Start,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text(text = "최초 측정 위치 기준", color = TextColorGray)
+                    Text(text = "최초 위치(1번 위치)에서 사용자의 눈 높이 기준", color = TextColorGray)
                     Text(text = "x : %.2f m".format(x), color = TextColorGray)
                     Text(text = "y : %.2f m".format(y), color = TextColorGray)
                     Text(text = "z : %.2f m".format(z), color = TextColorGray)

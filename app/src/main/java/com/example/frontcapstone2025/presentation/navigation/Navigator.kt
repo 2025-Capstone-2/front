@@ -49,7 +49,7 @@ fun Navigator(
     Scaffold { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = "GetAllDistancePage",
+            startDestination = "MainPage",
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(route = "MainPage") {
