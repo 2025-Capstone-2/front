@@ -11,19 +11,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Slider
-import androidx.compose.material3.Switch
-import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -36,18 +32,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.frontcapstone2025.components.buttons.CustomButton
-import com.example.frontcapstone2025.components.items.WifiGraph
-import com.example.frontcapstone2025.components.items.WifiGraphPoint
 import com.example.frontcapstone2025.components.layout.BottomMenu
 import com.example.frontcapstone2025.components.layout.MainPageTopBar
-import com.example.frontcapstone2025.utility.WifiConfig
-import com.example.frontcapstone2025.ui.theme.BottomBarBackground
 import com.example.frontcapstone2025.ui.theme.DivideLineColor
 import com.example.frontcapstone2025.ui.theme.TextColorGray
-import com.example.frontcapstone2025.utility.rememberWifiDistances
-import com.example.frontcapstone2025.utility.rssiToDistance
-import com.example.frontcapstone2025.utility.zeroPhaseUkf
 import com.example.frontcapstone2025.viemodel.MainViewModel
 
 @SuppressLint("DefaultLocale")
@@ -57,10 +45,7 @@ fun SettingPage(
     navToHelpPage: () -> Unit,
     mainViewModel: MainViewModel
 ) {
-    var rssiAt1m by rememberSaveable { mutableStateOf(WifiConfig.rssiAt1m.toFloat()) }
-    var pathLossExponent by rememberSaveable { mutableStateOf(WifiConfig.pathLossExponent.toFloat()) }
-    var wallLossDb by rememberSaveable { mutableStateOf(WifiConfig.wallLossDb.toFloat()) }
-    var minRssi by rememberSaveable { mutableStateOf(WifiConfig.minRssi.toFloat()) }
+    var locationPermission by rememberSaveable { mutableStateOf(true) }
 
     val chosenWifi by mainViewModel.chosenWifi.collectAsState()
     Scaffold(
@@ -105,7 +90,7 @@ fun SettingPage(
                 // 설명 텍스트
                 Text(
                     buildAnnotatedString {
-                        append("아래 권한을 전부 허용하지 않으면 ")
+                        append("아래 권한을 허용하지 않으면 ")
                         withStyle(
                             style = SpanStyle(
                                 color = Color.Red,
@@ -114,6 +99,7 @@ fun SettingPage(
                         ) {
                             append("앱의 기능을 사용할 수 없습니다.")
                         }
+                        append(" 현재 허용된 권한 목록은 아래와 같습니다.")
                     },
                     color = TextColorGray,
                     fontSize = 18.sp
@@ -121,103 +107,45 @@ fun SettingPage(
 
                 Spacer(modifier = Modifier.height(8.dp))
 
+                // 위치 권한 스위치
                 Column(
                     modifier = Modifier
                         .fillMaxWidth(),
                 ) {
-                    var resetKey by remember { mutableStateOf(0) }
-                    val wifiScanDelay by mainViewModel.wifiScanDelay.collectAsState()
-                    val wifiDistances by rememberWifiDistances(true, wifiScanDelay, resetKey)
-                    val rawPoints = remember { mutableStateListOf<WifiGraphPoint>() }
-                    val filteredPoints = remember { mutableStateListOf<WifiGraphPoint>() }
-                    val rawValues = remember { mutableListOf<Double>() }
-                    var index by remember { mutableStateOf(0) }
-                    val pinned = wifiDistances.find { it.ssid == chosenWifi }
-                    LaunchedEffect(pinned) {
-                        pinned?.let {
-                            rawPoints.add(WifiGraphPoint(index, it.rawRssi, it.distance))
-                            rawValues.add(it.rawRssi)
-                            val filtered = zeroPhaseUkf(rawValues)
-                            filteredPoints.clear()
-                            filtered.forEachIndexed { idx, rssi ->
-                                filteredPoints.add(WifiGraphPoint(idx, rssi, rawPoints[idx].distance))
-                            }
-                            index++
-                        }
-                    }
-
-                    WifiGraph(rawPoints = rawPoints, filteredPoints = filteredPoints)
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    val lastRawRssi = rawPoints.lastOrNull()?.rssi
-                    val lastFilteredRssi = filteredPoints.lastOrNull()?.rssi
-                    val lastDistance = lastFilteredRssi?.let { rssiToDistance(it) }
-                    Text(
-                        text = if (lastRawRssi != null) "Raw RSSI: %.2f dBm".format(lastRawRssi) else "Raw RSSI: -",
-                        color = TextColorGray
-                    )
-                    Text(
-                        text = if (lastFilteredRssi != null) "Filtered RSSI: %.2f dBm".format(lastFilteredRssi) else "Filtered RSSI: -",
-                        color = TextColorGray
-                    )
-                    Text(
-                        text = if (lastDistance != null) "Distance: %.2f m".format(lastDistance) else "Distance: -",
-                        color = TextColorGray
-                    )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    CustomButton(text = "리셋", onClicked = {
-                        rawPoints.clear()
-                        filteredPoints.clear()
-                        rawValues.clear()
-                        index = 0
-                        resetKey++
-                    })
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    // Wifi 설정 슬라이더
-                    Column(modifier = Modifier.fillMaxWidth()) {
-                        Text("RSSI at 1m: ${rssiAt1m.toInt()} dBm", color = TextColorGray)
-                        Slider(
-                            value = rssiAt1m,
-                            onValueChange = {
-                                rssiAt1m = it
-                                WifiConfig.rssiAt1m = it.toInt()
-                            },
-                            valueRange = -90f..-20f
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    ) {
+//                        Switch(
+//                            checked = locationPermission,
+//                            onCheckedChange = { locationPermission = it },
+//                            colors = SwitchDefaults.colors(
+//                                checkedThumbColor = BottomBarBackground,
+//                                checkedTrackColor = DivideLineColor,
+//                                disabledCheckedThumbColor = BottomBarBackground, // 진한 Thumb
+//                                disabledCheckedTrackColor = BottomBarBackground.copy(alpha = 0.4f) // 흐려진 트랙
+//                            ),
+//                            enabled = false
+//                        )
+                        Checkbox(
+                            checked = locationPermission,
+                            onCheckedChange = { locationPermission = it },
+                            colors = CheckboxDefaults.colors(
+//                                checkedColor = Color.Green,
+//                                uncheckedColor = Color.Gray,
+//                                checkmarkColor = Color.White,
+//                                disabledCheckedColor = Color.LightGray,
+//                                disabledUncheckedColor = Color.DarkGray
+                            ),
+                            enabled = false,
                         )
-
-                        Text("Path Loss Exponent: ${String.format("%.2f", pathLossExponent)}", color = TextColorGray)
-                        Slider(
-                            value = pathLossExponent,
-                            onValueChange = {
-                                pathLossExponent = it
-                                WifiConfig.pathLossExponent = it.toDouble()
-                            },
-                            valueRange = 1f..5f
-                        )
-
-                        Text("Wall Loss dB: ${wallLossDb.toInt()}", color = TextColorGray)
-                        Slider(
-                            value = wallLossDb,
-                            onValueChange = {
-                                wallLossDb = it
-                                WifiConfig.wallLossDb = it.toInt()
-                            },
-                            valueRange = 0f..10f
-                        )
-
-                        Text("Min RSSI: ${minRssi.toInt()} dBm", color = TextColorGray)
-                        Slider(
-                            value = minRssi,
-                            onValueChange = {
-                                minRssi = it
-                                WifiConfig.minRssi = it.toInt()
-                            },
-                            valueRange = -100f..-30f
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            "위치 권한",
+                            color = TextColorGray,
+                            modifier = Modifier.height(28.dp),
+                            fontSize = 16.sp
                         )
                     }
                 }
