@@ -40,23 +40,24 @@ class RetrofitManager {
     private val apiService = retrofit.create(ApiService::class.java)
 
     suspend fun getWifiPosition(
-        upDistance: Double,
-        downDistance: Double,
-        frontDistance: Double,
-        leftDistance: Double,
-        armLength: Double,
+        origin: Double,
+        origin_right: Double,
+        origin_cross_one: Double,
+        origin_cross_two: Double,
+        one_side_length: Double,
+        knee_to_eyes: Double,
         onSuccess: (WifiPosition) -> Unit,
         onFailure: () -> Unit
 
     ) {
         try {
             val response = apiService.getWifiPosition(
-                upDistance,
-                downDistance,
-                frontDistance,
-                leftDistance,
-                armLength
-
+                origin,
+                origin_right,
+                origin_cross_one,
+                origin_cross_two,
+                one_side_length,
+                knee_to_eyes
             )
             if (response.isSuccessful) {
                 val wifiPosition = response.body()
@@ -114,7 +115,7 @@ class RetrofitManager {
             if (response.isSuccessful) {
                 val result = response.body()
                 Log.d("analyzePcap", "Success: ${gson.toJson(result)}")
-                val list = result?.getAllBssids() ?: emptyList()
+                val list = result?.getAllSsids() ?: emptyList()
                 onSuccess(list)
             } else {
                 Log.e("analyzePcap", "Error: ${response.errorBody()}")

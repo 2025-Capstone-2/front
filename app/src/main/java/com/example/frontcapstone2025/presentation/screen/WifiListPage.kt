@@ -72,6 +72,7 @@ fun WifiListPage(
                 )
             } catch (_: SecurityException) {
             }
+            mainViewModel.setShowLoading(true)
             mainViewModel.analyzePcap(context, it)
         }
     }
@@ -110,10 +111,10 @@ fun WifiListPage(
 
     /* 분류 */
     val suspicious = wifiDistances.filter { wifi ->
-        suspiciousNames.any { it.equals(wifi.bssid, ignoreCase = true) }
+        suspiciousNames.any { it.equals(wifi.ssid, ignoreCase = true) }
     }
     val others = wifiDistances.filterNot { wifi ->
-        suspiciousNames.any { it.equals(wifi.bssid, ignoreCase = true) }
+        suspiciousNames.any { it.equals(wifi.ssid, ignoreCase = true) }
     }
 
     /* ---------- UI ---------- */

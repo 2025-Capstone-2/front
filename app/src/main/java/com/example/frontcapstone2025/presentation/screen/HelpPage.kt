@@ -67,45 +67,37 @@ fun HelpPage(
                     .padding(16.dp), // 내용 여백
                 verticalArrangement = Arrangement.Top
             ) {
-                // 취지
-                Text("취지", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color.White)
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    "저희 앱은 자체 인터넷으로 영상을 전송하는 몰래 카메라를 탐지하기 위한 앱이고, 아래와 같은 서비스를 제공합니다.\n" +
-                            "1) IP 카메라의 유무\n" +
-                            "2) IP 카메라의 정확한 위치 찾기",
-                    fontSize = 16.sp,
-                    color = Color.White
-                )
-
-                Spacer(modifier = Modifier.height(24.dp))
-
-
                 // 사용법
                 Text("사용법", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color.White)
 
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    "1. 홈에서 수상한 기기를 검색하세요.\n" +
-                            "2. 수상한 기기 찾기 버튼을 눌러 고정하고, 하단 왼쪽 메뉴를 통해 정확한 위치를 찾으세요.",
+                    "1. 홈에서 네트워크를 스캔하세요\n" +
+                            "2. 캡쳐 파일 선택 > download > usb wifi monitor > .pca 파일 을 선택해서 수상한 기기가 있는지 확인하세요\n" +
+                            "3. 수상한 기기의 찾기 버튼을 눌러 고정하고, 하단 왼쪽 메뉴를 통해 정확한 위치를 찾으세요.",
                     fontSize = 16.sp,
                     color = Color.White
                 )
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-
-                // 동작원리
-                Text("동작 원리", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                // 정확도 높이는 방법
+                Text(
+                    "정확도를 높이기 위한 방법",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
 
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
                     buildAnnotatedString {
                         append(
-                            "1. 수상한 기기 검색\n- 검색되는 wifi 중 카메라 영상을 보내는 기기를 머신러닝을 통해 찾습니다.\n\n" +
-                                    "2. 기기의 정확한 위치 찾기\n- 가까운 거리에 수상한 기기가 존재할 경우, 삼변측량을 통해 사용자의 왼쪽 어깨를 기준으로 정확한 위치 정보를 알려줍니다."
+                            "1. 단위 거리를 100cm 이상으로 설정하고 측정하세요. \n" +
+                                    "2. 측정 중에는 최대한 핸드폰을 움직이지 마세요\n" +
+                                    "3. 측정 시간을 길게 잡을수록 정확해집니다.\n   (30초 미만 : 부정확 / 30~150초 : 보통 / 150초 이상 : 정확)"
                         )
                     },
                     fontSize = 16.sp,
@@ -123,14 +115,47 @@ fun HelpPage(
                     buildAnnotatedString {
                         append(
                             "다음 권한들을 허용하고, 설정에서 변경해주어야 원활한 앱 사용이 가능합니다.\n\n" +
-                                    "1. 저장 공간 권한\n 랜카드를 통해 얻은 네트워크 정보를 전달받기 위해 저장 공간 접근 권한이 필요합니다.\n\n" +
-                                    "2. 위치 권한\n 와이파이 스캔을 하기 위해 위치 권한의 허용이 필요합니다.\n\n" +
-                                    "3. wifi 스캔 쓰로틀링(=wifi 검색 제한)\n 핸드폰의 설정 > 개발자 모드 > wifi 스캔 쓰로틀링(wifi 검색 제한) 을 꺼주시면, 더 정확한 거리 탐지가 가능해집니다\n 개발자 모드 켜는 법 : 설정 > 휴대전화 정보 > 소프트웨어 정보 > 빌드번호 언속으로 클릭(해제될때까지 클릭)"
+                                    "1. 위치 권한\n 와이파이 스캔을 하기 위해 위치 권한의 허용이 필요합니다.\n" +
+                                    "2. wifi 스캔 쓰로틀링(=wifi 검색 제한)\n 핸드폰의 설정 > 개발자 모드 > wifi 스캔 쓰로틀링(wifi 검색 제한) 을 꺼주시면, 더 정확한 거리 탐지가 가능해집니다\n 개발자 모드 켜는 법 : 설정 > 휴대전화 정보 > 소프트웨어 정보 > 빌드번호 언속으로 클릭(해제될때까지 클릭)"
                         )
                     },
                     fontSize = 16.sp,
                     color = Color.White
                 )
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                // 취지
+                Text("취지", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    "저희 앱은 자체 인터넷으로 영상을 전송하는 몰래 카메라를 탐지하기 위한 앱이고, 아래와 같은 서비스를 제공합니다.\n" +
+                            "1) IP 카메라의 유무\n" +
+                            "2) IP 카메라의 정확한 위치 찾기",
+                    fontSize = 16.sp,
+                    color = Color.White
+                )
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+
+                // 동작원리
+                Text("동작 원리", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color.White)
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Text(
+                    buildAnnotatedString {
+                        append(
+                            "1. 수상한 기기 검색\n- 검색되는 wifi 중 카메라 영상을 보내는 기기를 머신러닝을 통해 찾습니다.\n\n" +
+                                    "2. 기기의 정확한 위치 찾기\n- 가까운 거리에 수상한 기기가 존재할 경우, 삼변측량을 통해 최최 위치(1번 위치)에서 사용자의 눈 높이를 기준으로 정확한 위치 정보를 알려줍니다."
+                        )
+                    },
+                    fontSize = 16.sp,
+                    color = Color.White
+                )
+
+
             }
         }
     }

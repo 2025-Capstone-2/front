@@ -3,11 +3,14 @@ package com.example.frontcapstone2025.presentation.screen
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -22,6 +25,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.frontcapstone2025.components.buttons.CustomButton
 import com.example.frontcapstone2025.components.layout.TopBarWithBack
 import com.example.frontcapstone2025.ui.theme.DivideLineColor
 import com.example.frontcapstone2025.ui.theme.TextColorGray
@@ -34,8 +38,10 @@ fun GetArmLengthPage(
     navToHelpPage: () -> Unit,
     mainViewModel: MainViewModel,
 ) {
-    val armLength by mainViewModel.armLength.collectAsState()
+    val oneSideLength by mainViewModel.oneSideLength.collectAsState()
+    val kneeToEyesLength by mainViewModel.kneeToEyesLength.collectAsState()
     val chosenWifi by mainViewModel.chosenWifi.collectAsState()
+    val scanTime by mainViewModel.scanTime.collectAsState()
 
     Scaffold(
         modifier = Modifier
@@ -52,13 +58,15 @@ fun GetArmLengthPage(
             modifier = Modifier
                 .padding(innerPadding)
                 .padding(horizontal = 16.dp)
-                .fillMaxSize(),
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
+            // 단위 길이
             Text(
-                text = "팔 길이를 측정해서 입력하세요.\n만약 측정이 불가능할 경우 다음 평균 수치를 참고하세요.\n" +
-                        "성인 평균 : 여성 60~65cm / 남성 65~70cm",
+                text = "측정할 단위 길이를 cm로 입력하세요. 1m 이상이 적당합니다.\n",
                 modifier = Modifier.padding(bottom = 8.dp),
                 color = TextColorGray
             )
@@ -68,21 +76,21 @@ fun GetArmLengthPage(
                 horizontalArrangement = Arrangement.Center
             ) {
                 TextField(
-                    value = if (armLength == -1.0) "" else armLength.toString(),
+                    value = if (oneSideLength == -1.0) "" else oneSideLength.toString(),
                     onValueChange = { ar ->
                         if (ar.matches(Regex("^\\d{0,3}(\\.\\d{0,2})?$"))) {
                             ar.toDoubleOrNull()?.let {
-                                mainViewModel.setArmLength(it)
+                                mainViewModel.setOneLength(it)
                             }
                         }
                     },
-                    placeholder = { Text("팔 길이를 입력하세요. (예: 64.2)") },
+                    placeholder = { Text("cm 단위로 입력 -> ex) 100.0") },
                     singleLine = true,
                     textStyle = TextStyle(textAlign = TextAlign.Center),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     keyboardActions = KeyboardActions(
                         onDone = {
-                            moveToGetAllDistancePage()
+//                            moveToGetAllDistancePage()
                         }
                     ),
                     colors = TextFieldDefaults.colors(
@@ -106,6 +114,118 @@ fun GetArmLengthPage(
                     color = TextColorGray
                 )
             }
+
+            Spacer(modifier = Modifier.padding(vertical = 16.dp))
+
+            // 무릎부터 눈까지 길이
+            Text(
+                text = "배꼽부터 머리 위로 들은 손까지의 길이를 측정하여 cm로 입력하세요.\n",
+                modifier = Modifier.padding(bottom = 8.dp),
+                color = TextColorGray
+            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                TextField(
+                    value = if (kneeToEyesLength == -1.0) "" else kneeToEyesLength.toString(),
+                    onValueChange = { ar ->
+                        if (ar.matches(Regex("^\\d{0,3}(\\.\\d{0,2})?$"))) {
+                            ar.toDoubleOrNull()?.let {
+                                mainViewModel.setKneeToEyesLength(it)
+                            }
+                        }
+                    },
+                    placeholder = { Text("cm 단위로 입력 -> ex) 100.0") },
+                    singleLine = true,
+                    textStyle = TextStyle(textAlign = TextAlign.Center),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    keyboardActions = KeyboardActions(
+                        onDone = {
+//                            moveToGetAllDistancePage()
+                        }
+                    ),
+                    colors = TextFieldDefaults.colors(
+                        focusedTextColor = TextColorGray,
+                        unfocusedTextColor = TextColorGray,
+                        focusedContainerColor = Color.Transparent,
+                        unfocusedContainerColor = Color.Transparent,
+                        focusedIndicatorColor = DivideLineColor,
+                        disabledPlaceholderColor = TextColorGray,
+                        focusedPlaceholderColor = TextColorGray,
+                        unfocusedPlaceholderColor = TextColorGray,
+                        disabledIndicatorColor = DivideLineColor,
+                        unfocusedIndicatorColor = DivideLineColor,
+                        cursorColor = DivideLineColor
+                    )
+
+                )
+                Text(
+                    text = "cm",
+                    modifier = Modifier.padding(start = 8.dp),
+                    color = TextColorGray
+                )
+            }
+
+            Spacer(modifier = Modifier.padding(vertical = 16.dp))
+
+            // 측정 시간
+            Text(
+                text = "측정할 시간을 입력하세요. 30초~180초를 추천하며 길 수록 정확도가 올라갑니다.\n",
+                modifier = Modifier.padding(bottom = 8.dp),
+                color = TextColorGray
+            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                TextField(
+                    value = if (scanTime == -1) "" else scanTime.toString(),
+                    onValueChange = { ar ->
+                        if (ar.matches(Regex("^\\d{0,3}$"))) {
+                            ar.toIntOrNull()?.let {
+                                mainViewModel.setScanTime(it)
+                            }
+                        }
+                    },
+                    placeholder = { Text("초 단위로 입력 -> ex) 30") },
+                    singleLine = true,
+                    textStyle = TextStyle(textAlign = TextAlign.Center),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    keyboardActions = KeyboardActions(
+                        onDone = {
+//                            moveToGetAllDistancePage()
+                        }
+                    ),
+                    colors = TextFieldDefaults.colors(
+                        focusedTextColor = TextColorGray,
+                        unfocusedTextColor = TextColorGray,
+                        focusedContainerColor = Color.Transparent,
+                        unfocusedContainerColor = Color.Transparent,
+                        focusedIndicatorColor = DivideLineColor,
+                        disabledPlaceholderColor = TextColorGray,
+                        focusedPlaceholderColor = TextColorGray,
+                        unfocusedPlaceholderColor = TextColorGray,
+                        disabledIndicatorColor = DivideLineColor,
+                        unfocusedIndicatorColor = DivideLineColor,
+                        cursorColor = DivideLineColor
+                    )
+
+                )
+                Text(
+                    text = "초",
+                    modifier = Modifier.padding(start = 8.dp),
+                    color = TextColorGray
+                )
+            }
+
+            CustomButton(
+                onClicked = moveToGetAllDistancePage,
+                text = "거리 측정 시작",
+                enabled = (oneSideLength != -1.0 && kneeToEyesLength != -1.0 && scanTime > 0),
+            )
 
         }
     }
